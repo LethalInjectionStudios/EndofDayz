@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
             if (Input.GetKeyDown(KeyCode.Escape))
-                Application.Quit();
+                SceneManager.LoadScene("Menu");
         }
         Vector2 mousePositon = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         float horizontal = Input.GetAxisRaw("Horizontal") * moveSpeed * Time.deltaTime;
