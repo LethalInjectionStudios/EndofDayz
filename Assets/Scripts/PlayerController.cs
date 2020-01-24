@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
@@ -9,6 +10,10 @@ public class PlayerController : MonoBehaviour
     public bool isDead = false;
     private AudioSource audio;
 
+    public int score = 0;
+    public Text scoreText;
+    public Text gameOver;
+
     private float time = 5f;
 
     // Start is called before the first frame update
@@ -17,14 +22,22 @@ public class PlayerController : MonoBehaviour
         anim = GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
         audio.enabled = true;
+        scoreText.text = "Score: " + score.ToString();
+        gameOver.enabled = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(isDead && Input.GetKeyDown(KeyCode.Q))
+        if(isDead)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            gameOver.enabled = true;
+
+            if(Input.GetKeyDown(KeyCode.Space))
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+                Application.Quit();
         }
         Vector2 mousePositon = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         float horizontal = Input.GetAxisRaw("Horizontal") * moveSpeed * Time.deltaTime;
@@ -81,5 +94,11 @@ public class PlayerController : MonoBehaviour
         isDead = true;
         anim.SetBool("isDead", true);
         anim.SetTrigger("Dead");
+    }
+
+    public void Score()
+    {
+        score++;
+        scoreText.text = "Score: " + score.ToString();
     }
 }

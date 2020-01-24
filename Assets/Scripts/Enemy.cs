@@ -2,7 +2,7 @@
 
 public class Enemy : MonoBehaviour
 {
-    private float speed = 5.0f;
+    public float speed = 5.0f;
     private GameObject target;
     private Animator anim;
     private bool facingRight = true;
@@ -62,6 +62,7 @@ public class Enemy : MonoBehaviour
         isDead = true;
         anim.SetBool("isDead", true);
         anim.SetTrigger("Dead");
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().Score();
         //Destroy(gameObject);
     }
 }

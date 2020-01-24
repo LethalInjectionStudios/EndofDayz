@@ -13,17 +13,18 @@ public class Bullet : MonoBehaviour
     {
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if(mousePos.x > player.transform.position.x)
-        {
-            direction = Vector3.right;
-        }
-        else
-        {
-            direction = Vector3.left;
-            Vector3 ltemp = transform.localScale;
-            ltemp.x *= -1;
-            transform.localScale = ltemp;
-        }
+        direction = Vector3.right;
+        //if(mousePos.x > player.transform.position.x)
+        //{
+        //    direction = Vector3.forward;
+        //}
+        //else
+        //{
+        //    direction = Vector3.left;
+        //    Vector3 ltemp = transform.localScale;
+        //    ltemp.x *= -1;
+        //    transform.localScale = ltemp;
+        //}
           
         
     }

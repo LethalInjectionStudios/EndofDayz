@@ -6,21 +6,28 @@ public class Spawner : MonoBehaviour
 {
     public GameObject enemy;
     private float spawnTmr = 0;
-    private float spawnTmrMin = 1f;
-    private float spawnTmrMax = 3;
+    private float spawnTmrMin = 2f;
+    private float spawnTmrMax = 4;
+    private float speedMul = 1;
+    private float speedMulTmr = 5f;
     private GameObject player;
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-
-        Spawn();
     }
 
     // Update is called once per frame
     void Update()
     {
         spawnTmr -= Time.deltaTime;
+        speedMulTmr -= Time.deltaTime;
+
+        if(speedMulTmr <= 0)
+        {
+            speedMulTmr = 5f;
+            speedMul += .2f;
+        }
 
         if(spawnTmr <= 0 && !player.GetComponent<PlayerController>().isDead)
         {
@@ -31,6 +38,18 @@ public class Spawner : MonoBehaviour
 
     private void Spawn()
     {
-        Instantiate(enemy, transform.position, Quaternion.identity);
+        GameObject zed;
+
+        if (this.tag == "Horizontal")
+        {
+            zed = (GameObject)Instantiate(enemy, new Vector2(transform.position.x + Random.Range(-30, 30), transform.position.y), Quaternion.identity);
+            zed.GetComponent<Enemy>().speed *= speedMul;
+        }
+
+        if (this.tag == "Vertical")
+        {
+            zed = (GameObject)Instantiate(enemy, new Vector2(transform.position.x, transform.position.y + Random.Range(-20, 20)), Quaternion.identity);
+            zed.GetComponent<Enemy>().speed *= speedMul;
+        }
     }
 }
