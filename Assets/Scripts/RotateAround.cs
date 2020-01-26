@@ -33,6 +33,5 @@ public class RotateAround : MonoBehaviour
     {
         facingRight = !facingRight;;
         GetComponentInChildren<SpriteRenderer>().flipY = !GetComponentInChildren<SpriteRenderer>().flipY;
-        //GetComponentInChildren<SpriteRenderer>().flipX = !GetComponentInChildren<SpriteRenderer>().flipX;
     }
 }

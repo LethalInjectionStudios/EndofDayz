@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    private float moveSpeed = 25f;
+    private float moveSpeed = 50f;
     private Vector3 direction;
     private float ttd = 2.5f;
 
@@ -13,20 +13,7 @@ public class Bullet : MonoBehaviour
     {
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         GameObject player = GameObject.FindGameObjectWithTag("Player");
-        direction = Vector3.right;
-        //if(mousePos.x > player.transform.position.x)
-        //{
-        //    direction = Vector3.forward;
-        //}
-        //else
-        //{
-        //    direction = Vector3.left;
-        //    Vector3 ltemp = transform.localScale;
-        //    ltemp.x *= -1;
-        //    transform.localScale = ltemp;
-        //}
-          
-        
+        direction = Vector3.right;        
     }
 
     // Update is called once per frame
@@ -36,8 +23,7 @@ public class Bullet : MonoBehaviour
 
         ttd -= Time.deltaTime;
         if (ttd <= 0)
-            Destroy(gameObject);
-        
+            Destroy(gameObject);        
     }
 
     void OnTriggerEnter2D(Collider2D other)

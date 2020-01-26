@@ -1,18 +1,28 @@
 ﻿using UnityEngine;
+using Pathfinding;
 
 public class Enemy : MonoBehaviour
 {
-    public float speed = 5.0f;
+    private AIDestinationSetter destinationSetter;
+    private AIPath aiPath;
     private GameObject target;
     private Animator anim;
+    new private AudioSource audio;
     private bool facingRight = true;
     private bool isDead = false;
     private float ttd = 2.5f;
+    private bool deathAudioPlayed = false;
+    //private float baseSpeed = 5f;
 
     void Start()
     {
         target = GameObject.FindGameObjectWithTag("Player");
         anim = GetComponent<Animator>();
+        destinationSetter = GetComponent<AIDestinationSetter>();
+        audio = GetComponent<AudioSource>();
+        aiPath = GetComponent<AIPath>();
+        destinationSetter.target = target.transform;
+        //aiPath.maxSpeed = baseSpeed;
     }
 
     void Update()
@@ -20,7 +30,13 @@ public class Enemy : MonoBehaviour
 
         if (isDead)
         {
-            GetComponent<BoxCollider2D>().enabled = false;
+            if (!deathAudioPlayed)
+            {
+                audio.Play();
+                deathAudioPlayed = true;
+            }
+
+                GetComponent<BoxCollider2D>().enabled = false;
             ttd -= Time.deltaTime;
             if (ttd <= 0)
                 Destroy(gameObject);
@@ -29,23 +45,17 @@ public class Enemy : MonoBehaviour
 
         if (target.GetComponent<PlayerController>().isDead)
         {
-            speed = 0f;
+            aiPath.maxSpeed = 0f;
             anim.SetBool("isRunning", false);
             return;
         }
 
         anim.SetBool("isRunning", true);
-        float step = speed * Time.deltaTime;
 
         if (target.transform.position.x > transform.position.x && !facingRight)
             Flip();
         else if (target.transform.position.x < transform.position.x && facingRight)
             Flip();
-
-        transform.position = Vector2.MoveTowards(transform.position, target.transform.position, step);
-
-        transform.rotation = Quaternion.Euler(0, 0, 0);
-
     }
 
     private void Flip()
@@ -58,11 +68,10 @@ public class Enemy : MonoBehaviour
 
     public void Die()
     {
-        speed = 0f;
+        aiPath.maxSpeed = 0f;
         isDead = true;
         anim.SetBool("isDead", true);
         anim.SetTrigger("Dead");
         GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().Score();
-        //Destroy(gameObject);
     }
 }

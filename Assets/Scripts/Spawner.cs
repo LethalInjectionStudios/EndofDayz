@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pathfinding;
 
 public class Spawner : MonoBehaviour
 {
@@ -43,13 +44,13 @@ public class Spawner : MonoBehaviour
         if (this.tag == "Horizontal")
         {
             zed = (GameObject)Instantiate(enemy, new Vector2(transform.position.x + Random.Range(-30, 30), transform.position.y), Quaternion.identity);
-            zed.GetComponent<Enemy>().speed *= speedMul;
+            zed.GetComponent<AIPath>().maxSpeed = 5 * speedMul;
         }
 
         if (this.tag == "Vertical")
         {
             zed = (GameObject)Instantiate(enemy, new Vector2(transform.position.x, transform.position.y + Random.Range(-20, 20)), Quaternion.identity);
-            zed.GetComponent<Enemy>().speed *= speedMul;
+            zed.GetComponent<AIPath>().maxSpeed = 5 * speedMul;
         }
     }
 }
