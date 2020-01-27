@@ -12,6 +12,7 @@ public class Enemy : MonoBehaviour
     private bool isDead = false;
     private float ttd = 2.5f;
     private bool deathAudioPlayed = false;
+    GameObject[] boundaries;
     //private float baseSpeed = 5f;
 
     void Start()
@@ -22,7 +23,13 @@ public class Enemy : MonoBehaviour
         audio = GetComponent<AudioSource>();
         aiPath = GetComponent<AIPath>();
         destinationSetter.target = target.transform;
+        boundaries = GameObject.FindGameObjectsWithTag("Boundary");
         //aiPath.maxSpeed = baseSpeed;
+
+        foreach(GameObject boundary in boundaries)
+        {
+            Physics2D.IgnoreCollision(GetComponent<BoxCollider2D>(), boundary.GetComponent<BoxCollider2D>());
+        }
     }
 
     void Update()

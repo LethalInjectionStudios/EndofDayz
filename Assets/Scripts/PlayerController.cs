@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     
     private int score = 0;
     public Text scoreText;
-    public Text gameOver;
+    public Image gameOver;
     public AudioClip death;
 
     // Start is called before the first frame update
@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
         audio = GetComponent<AudioSource>();
         audio.enabled = true;
         scoreText.text = "Score: " + score.ToString();
-        gameOver.enabled = false;
+        gameOver.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -30,13 +30,7 @@ public class PlayerController : MonoBehaviour
     {
         if(isDead)
         {
-            gameOver.enabled = true;
-
-            if(Input.GetKeyDown(KeyCode.Space))
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-
-            if (Input.GetKeyDown(KeyCode.Escape))
-                SceneManager.LoadScene("Menu");
+            gameOver.gameObject.SetActive(true);
         }
 
         Vector2 mousePositon = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -89,6 +83,7 @@ public class PlayerController : MonoBehaviour
 
     private void Die()
     {
+        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
         moveSpeed = 0f;
         isDead = true;
         audio.PlayOneShot(death, 1);
